@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import * as React from "react";
+import { View, StyleSheet, Button } from "react-native";
+import { Video, ResizeMode } from "expo-av";
 
-export default function VideoPicker({uri}) {
+export default function VideoPicker({ uri }) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   return (
@@ -16,13 +16,15 @@ export default function VideoPicker({uri}) {
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
+        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
       <View style={styles.buttons}>
         <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
+          title={status.isPlaying ? "Pause" : "Play"}
           onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+            status.isPlaying
+              ? video.current.pauseAsync()
+              : video.current.playAsync()
           }
         />
       </View>
@@ -33,17 +35,17 @@ export default function VideoPicker({uri}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    justifyContent: "center",
+    backgroundColor: "#ecf0f1",
   },
   video: {
-    alignSelf: 'center',
+    alignSelf: "center",
     width: "100%",
     height: "100%",
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
