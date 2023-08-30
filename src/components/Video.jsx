@@ -1,10 +1,20 @@
-import * as React from "react";
+import  React, { useState, useRef, useEffect } from "react";
 import { View, StyleSheet, Button } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 
 export default function VideoPicker({ uri }) {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
+  const [playButton, setPlayButton] = useState(false);
+
+
+
+  useEffect(() => {
+   if(uri){
+    setPlayButton(true)
+   }
+  }, [uri])
+  
   return (
     <View style={styles.container}>
       <Video
@@ -19,7 +29,9 @@ export default function VideoPicker({ uri }) {
         onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
       <View style={styles.buttons}>
-        <Button
+        {
+            playButton && (
+                <Button
           title={status.isPlaying ? "Pause" : "Play"}
           onPress={() =>
             status.isPlaying
@@ -27,6 +39,8 @@ export default function VideoPicker({ uri }) {
               : video.current.playAsync()
           }
         />
+            )
+        }
       </View>
     </View>
   );
