@@ -1,0 +1,102 @@
+import React, { useState, useEffect,useRef } from 'react'
+import { Text, View, StyleSheet,SafeAreaView,Alert, Modal, Pressable, Button,Image,FlatList,useWindowDimensions, } from 'react-native';
+import VisibilitySensor from '@svanboxel/visibility-sensor-react-native'
+import { Video, ResizeMode } from "expo-av";
+import { videoData } from '../assets/data';
+import { ScrollView } from 'react-native-gesture-handler';
+
+
+const Videos = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const video = useRef(null);
+    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    const [paused, setPaused] = useState(true);
+    const { width } = useWindowDimensions();
+
+ 
+   useEffect(() => {
+    //video.current.props.
+     //console.log('first should',video.current.props)
+    //setIsVideoPlaying((prev) => !prev)
+  // console.log('should',video.current.props.shouldPlay, isVideoPlaying)
+}, [])
+
+    const handleHideModal =  () => {
+       
+      setModalVisible(!modalVisible)
+       }
+       const handleShowModal =  () => {
+        setModalVisible(true)
+       }
+       if(!video) {
+        return (
+            <View style={styles.root}>
+                <Text>loading videos...</Text>L
+            </View>
+        )
+       }
+  return (
+    <SafeAreaView style={styles.container}>
+         <Text>Video Player</Text>
+    <View>
+    <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={handleShowModal}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
+     <FlatList
+     data={videoData}
+     showsVerticalScrollIndicator={false}
+     renderItem={({item}) => (
+      <VisibilitySensor onChange={(isVisible) => (
+          console.log(isVisible),
+          isVisible ? setPaused(false) : setPaused(true),
+          video.current.props.shouldPlay = true
+         // console.log('second should',video.current.props)
+        )  
+      
+    }
+    >
+       <Video
+         ref={video}
+         source={ item.video}
+              style={styles.video}
+              onError={(e) => console.log('error',e)}
+              resizeMode={ResizeMode.COVER}
+              repeat={true}
+              paused={paused}
+              useNativeControls
+              //isLooping
+              shouldPlay={false}
+            />
+         <Text style={styles.name}>{item.name}</Text>
+      
+     </VisibilitySensor>
+     )}
+     />
+    </View>
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleHideModal}>
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      
+    </SafeAreaView>
+  )
+}
+
+export default Videos

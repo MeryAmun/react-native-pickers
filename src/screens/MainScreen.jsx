@@ -1,10 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 import { createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MediaScreen from '../subscreens/MediaScreen'
 import CalendarPicker from '../subscreens/DateTime'
+import Audios from '../subscreens/Audios'
+//import Videos from '../subscreens/Videos'
+import SingleVideo from '../subscreens/SingleVideo'
 
 const Tab = createMaterialBottomTabNavigator();
 const EmptyComponent = () => {
@@ -35,13 +38,35 @@ const MainScreen = () => {
     ),
   }}
   />
+  <Tab.Screen name="Audio Player" component={Audios}  
+   options={{
+    tabBarLabel: 'Audio',
+    tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="music" color='black' size={25} />
+    ),
+  }}
+  />
+  <Tab.Screen name="Test" component={SingleVideo}  
+   options={{
+    tabBarLabel: 'Test',
+    tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="video-box" color='black' size={25} />
+    ),
+  }}
+  />
  
   
-  <Tab.Screen name="Main Create" component={EmptyComponent}
+  {/* <Tab.Screen name="Video Player" component={Videos}
+  options={{
+    tabBarLabel: 'Videos',
+    tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="video-box" color='gray' size={25} />
+    ),
+  }}
   listeners={({navigation}) => ({
    
   })}  
-  />
+  /> */}
 </Tab.Navigator>
   )
 }
