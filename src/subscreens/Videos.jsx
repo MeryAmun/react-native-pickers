@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Text,
   View,
@@ -6,30 +6,31 @@ import {
   SafeAreaView,
   Alert,
   Modal,
-  ScrollView,
   Pressable,
+  FlatList,
+  useWindowDimensions,
 } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import { videoData } from "../assets/data";
 import { useIsFocused } from "@react-navigation/native";
 
-const itemHeight = 300;
-
 const Videos = () => {
   const screenIsFocused = useIsFocused();
   const [modalVisible, setModalVisible] = useState(false);
-  const video = useRef(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const { height } = useWindowDimensions();
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  //const [screenFocused, setScreenFocused] = useState(screenIsFocused)
+  const itemHeight = height;
 
-  const handleScroll = useCallback((e) => {
-    const scrollPosition = e.nativeEvent.contentOffset.y;
-    //console.log(scrollPosition)
-    if (scrollPosition < itemHeight) {
-      setIsVideoPlaying(true);
-    } else if (scrollPosition > itemHeight && !isVideoPlaying) {
-      setIsVideoPlaying(false);
-    }
-  }, []);
+  const handleScroll = useCallback(
+    (e) => {
+      const offset = Math.round(e.nativeEvent.contentOffset.y / itemHeight);
+
+      //console.log(screenIsFocused);
+      setFocusedIndex(offset);
+    },
+    [setFocusedIndex]
+  );
   const handleHideModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -39,37 +40,39 @@ const Videos = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView scrollEventThrottle={16} onScroll={handleScroll}>
-        <View></View>
-        <Video
-          ref={video}
-          source={{
-            uri: "https://d8vywknz0hvjw.cloudfront.net/fitenium-media-prod/videos/45fee890-a74f-11ea-8725-311975ea9616/proccessed_720.mp4",
-          }}
-          style={{
-            itemHeight,
-            alignSelf: "center",
-            width: "100%",
-            aspectRatio: 1,
-          }}
-          onError={(e) => console.log("error", e)}
-          resizeMode={ResizeMode.COVER}
-          useNativeControls
-          isLooping
-          shouldPlay={isVideoPlaying && screenIsFocused}
+      <View>
+        <FlatList
+          data={videoData}
+          onScroll={handleScroll}
+          renderItem={({ item, index }) => (
+            <View style={{ height }}>
+              <Video
+                source={{
+                  uri: "https://d8vywknz0hvjw.cloudfront.net/fitenium-media-prod/videos/45fee890-a74f-11ea-8725-311975ea9616/proccessed_720.mp4",
+                }}
+                style={{
+                  height,
+                  alignSelf: "center",
+                  width: "100%",
+                  aspectRatio: 1,
+                }}
+                resizeMode={ResizeMode.COVER}
+                repeat
+                useNativeControls
+                isLooping
+                shouldPlay={focusedIndex === index && screenIsFocused}
+              />
+              <Text style={styles.name}>{item.name}</Text>
+            </View>
+          )}
         />
-        <Text style={styles.name}>{videoData[0].name}</Text>
-
-        <View>
-          <Text style={styles.name}>{videoData[0].description}</Text>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={handleShowModal}
-          >
-            <Text style={styles.textStyle}>Show Modal</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={handleShowModal}
+        >
+          <Text style={styles.textStyle}>Show Modal</Text>
+        </Pressable>
+      </View>
 
       <Modal
         animationType="slide"
@@ -114,7 +117,6 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: "center",
     width: "100%",
-
     aspectRatio: 1,
   },
   container: {
@@ -125,6 +127,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ecf0f1",
     textAlign: "center",
     padding: 10,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 10,
   },
   centeredView: {
     flex: 1,
