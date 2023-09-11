@@ -5,7 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MediaScreen from "../subscreens/MediaScreen";
 import CalendarPicker from "../subscreens/DateTime";
-//import Audios from '../subscreens/Audios'
+import Audios from '../subscreens/Audios'
 import Videos from "../subscreens/Videos";
 import SingleVideo from "../subscreens/SingleVideo";
 
@@ -42,14 +42,14 @@ const MainScreen = () => {
           ),
         }}
       />
-      {/* <Tab.Screen name="Audio Player" component={Audios}  
+      <Tab.Screen name="Audio Player" component={Audios}  
    options={{
     tabBarLabel: 'Audio',
     tabBarIcon: ({ color, size }) => (
       <MaterialCommunityIcons name="music" color='black' size={25} />
     ),
   }}
-  /> */}
+  />
       <Tab.Screen
         name="Single Video"
         component={SingleVideo}
