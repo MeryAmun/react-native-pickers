@@ -66,12 +66,15 @@ const Videos = () => {
             </View>
           )}
         />
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={handleShowModal}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable>
+       {
+        modalVisible && (
+          <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={handleShowModal}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
+        )
+      }
       </View>
 
       <Modal

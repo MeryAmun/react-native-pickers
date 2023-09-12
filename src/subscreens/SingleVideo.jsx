@@ -62,12 +62,15 @@ const Videos = () => {
 
         <View>
           <Text style={styles.name}>{videoData[0].description}</Text>
+          {
+        !modalVisible && (
           <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={handleShowModal}
-          >
-            <Text style={styles.textStyle}>Show Modal</Text>
-          </Pressable>
+        style={[styles.button, styles.buttonOpen]}
+        onPress={handleShowModal}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
+        )
+      }
         </View>
       </ScrollView>
 
