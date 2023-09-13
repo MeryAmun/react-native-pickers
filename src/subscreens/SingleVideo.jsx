@@ -12,6 +12,7 @@ import {
 import { Video, ResizeMode } from "expo-av";
 import { videoData } from "../assets/data";
 import { useIsFocused } from "@react-navigation/native";
+import CarouselComponent from "../components/Carousel";
 
 const itemHeight = 300;
 
@@ -61,7 +62,10 @@ const Videos = () => {
         <Text style={styles.name}>{videoData[0].name}</Text>
 
         <View>
-          <Text style={styles.name}>{videoData[0].description}</Text>
+          <Text style={styles.description}>{videoData[0].description}</Text>
+         <View>
+         <CarouselComponent/>
+         </View>
           {
         !modalVisible && (
           <Pressable
@@ -110,9 +114,14 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   name: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
     marginVertical: 10,
+  },
+  description: {
+    marginVertical: 20,
+    fontSize: 16,
+    fontWeight: "400",
   },
   video: {
     alignSelf: "center",
@@ -158,6 +167,11 @@ const styles = StyleSheet.create({
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: "50%",
+    marginTop:20
   },
   buttonClose: {
     backgroundColor: "#2196F3",

@@ -90,3 +90,5 @@ export const videoData = [
     video: require("./videos/hero.mp4"),
   },
 ];
+
+export const randomNumbers = Math.floor(Math.random() * 100) + 1
